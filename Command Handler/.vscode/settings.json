@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "inttypes.h": "c",
-        "time.h": "c",
-        "semaphore.h": "c",
-        "pthread.h": "c"
-    }
-}
