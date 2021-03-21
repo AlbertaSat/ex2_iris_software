@@ -3,13 +3,27 @@
 #include <time.h>
 #include <unistd.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+
 
 #define false 0
 #define true 1
 
+const char* pipePath = "./pipe";
+int fd;
+
 // to serve as flags
 int accessImage = false;
 int commInfo = false;
+
+void terminate(){
+    printf("Closed Pipe\n");
+    close(fd);
+    unlink(pipePath);
+    exit(1);
+}
 
 void imageSent(){
     printf("<<<Image passed to OBC>>>\n");
@@ -21,9 +35,25 @@ void communicateInfo(){
 }
 
 int main(){
-    printf("My id is: %d",getpid());
+    printf("My id is: %d\n",getpid());
+    
+    if (mkfifo(pipePath, 0666) == -1){
+        printf("Cannot open pipe: Check Path\n");
+        return -1;
+    }
+
+    fd = open(pipePath, O_WRONLY);
+    if (fd == -1){
+        printf("Pipe open failes \n");
+        return -1;
+    }
+    char id[10];
+    sprintf(id, "%d", getpid());
+    write(fd, id, 10);
+
     signal(SIGUSR1, imageSent);
     signal(SIGUSR2, communicateInfo);
+    signal(SIGINT, terminate);
     while (true){
         sleep(100);
     }

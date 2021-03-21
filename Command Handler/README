@@ -1,0 +1,11 @@
+Notes:
+    This program mocks the interface of the command handler. The "command handler" program handles
+    interrupts and acts according to the signal passed.
+    The program "command" makes the requests.
+
+    Runs on POSIX based OS
+
+Running Instructions:
+    * type make in terminal
+    * open ./commandHandler.out in one terminal window
+    * open ./command.out in another terminal window

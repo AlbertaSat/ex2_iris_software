@@ -8,5 +8,5 @@ command.out: command.c
 
 #-lpthread
 	
-clear:
+clean:
 	rm -f *.out
