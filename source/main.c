@@ -1,7 +1,12 @@
 /**
- * @file timer.h
- * @author Andrew Rooney
+ * @file main.c
+ * @author Andrew R. Rooney
+ * @brief Main command handling and processing for Iris SOC
+ * @version 0.1
  * @date 2021-06-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
 #include "alt_printf.h"
 #include "alt_generalpurpose_io.h"

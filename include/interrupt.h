@@ -1,7 +1,12 @@
 /**
  * @file interrupt.h
- * @author Andrew Rooney
- * @date 2021-06-17
+ * @author Andrew R. Rooney
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
 #ifndef __INTERRUPT_H
 #define __INTERRUPT_H

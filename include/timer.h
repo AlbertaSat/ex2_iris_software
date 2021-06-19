@@ -1,7 +1,12 @@
 /**
  * @file timer.h
- * @author Andrew Rooney
- * @date 2021-06-17
+ * @author Andrew R. Rooney
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
  */
 #ifndef __TIMER_H
 #define __TIMER_H
