@@ -59,3 +59,26 @@ ELF := application.axf
 HWLIBS_SRC := alt_clock_manager.c alt_globaltmr.c alt_interrupt.c alt_timers.c alt_watchdog.c alt_spi.c alt_generalpurpose_io.c alt_16550_uart.c
 
 include Makefile.inc
+
+
+out/compression.o: source/iris_compression.c 
+	gcc -c $^ -o $@ -I include
+
+out/compressionTest.o: test/iris_image_compression_test.c
+	gcc -c test/iris_image_compression_test.c -o out/compTest.o -I include
+
+out/seq.o: source/init_seq.c
+	gcc -c $^ -o $@ -I include
+
+out/api.o: source/iris_api.c include/iris_api.h
+	gcc -c $^ -o $@ -I include
+
+out/buffer.o: source/iris_buffer.c include iris_buffer.h
+
+missc.o: 
+	cd source && gcc -c init_seq.c iris_buffer.c iris_compression.c iris_heuristic.c  iris_utils.c iris_api.c iris_cloud_detection.c iris_entropy_encoder.c iris_predictor.c -I include
+
+
+
+clean:
+	rm -f out/*.o
