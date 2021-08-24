@@ -30,6 +30,7 @@
 /*File Includes*/
 #include "iris_buffer.h"
 #include "iris_configs.h"
+#include "iris_api.h"
 /*
   - Assign the image file
   - Prepare the buffer for the compresser
@@ -51,21 +52,19 @@ int test_compress_img()
 {
   char* testIm = (char *) malloc(128);
   sprintf(testIm, "testImage.png");
-  printf("String: %s\n", testIm);
-
-  return 0;
+  
   // MetaData for image
   input_feature_t image_metadata;
   image_metadata.signed_samples = '1';
   image_metadata.signed_samples = '1';
   image_metadata.dyn_range = '1';
   image_metadata.regular_input = '1';
-  image_metadata.x_size = 512;
-  image_metadata.y_size = 256;
-  image_metadata.z_size = 8;
-  image_metadata.in_interleaving = BSQ;
+  image_metadata.x_size = 128;
+  image_metadata.y_size = 128;
+  image_metadata.z_size = 1;
+  image_metadata.in_interleaving = BIL;
   image_metadata.in_interleaving_depth = 1;
-  image_metadata.byte_ordering = BIG;
+  image_metadata.byte_ordering = LITTLE;
 
   // Prepare the buffer packet
   buffer_packet_t buffer;
@@ -80,11 +79,12 @@ int test_compress_img()
   strcpy(buffer.compressed_file, "testOut");
 
   // Initialize the buffer with demo data
-  buf_handle_t handle = buffer_init(&buffer, 10);
+  buf_handle_t handle = buffer_init(&buffer, 1);
+  compress_img(handle, 0);
 
-  
   // Free Memory
   free(testIm);
+  return 0;
 }
 
 
