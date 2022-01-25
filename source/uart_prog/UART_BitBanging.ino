@@ -96,44 +96,52 @@ void sendPacket(int mess)
     delay(2 * cycle);
 }
 
-void readPacket()
+int readPacket()
 {
     int cycle = 1000 / baudRateUART;
-    // wait for the first bit in packet
-    delay(cycle);
+    // wait for the 1.5 times cycle to start sampling
+    delay(1.5 * cycle);
     int parity = 0;
+    int bits[8];
     // Read the message bits
     for (int i = 0; i < 8; i++)
     {
         int val = digitalRead(gpioR);
         if (val == HIGH)
         {
-            Serial.print(1);
-            Serial.print(' ');
+            bits[i] = 1;
+            // Serial.print(1);
+            // Serial.print(' ');
             parity++;
         }
         else
         {
-            Serial.print(0);
-            Serial.print(' ');
+            bits[i] = 0;
+            // Serial.print(0);
+            // Serial.print(' ');
         }
         delay(cycle);
     }
+
+    int validParity = 0;
 
     // check parity bit
     int val = digitalRead(gpioR);
 
     if (val == LOW && parity % 2 == 0)
     {
-        Serial.println("\nValid Parity");
+        // Serial.println("\nValid Parity");
+        validParity = 1;
     }
     else if (val == HIGH && parity % 2 != 0)
     {
-        Serial.println("\nValid Parity");
+        // Serial.println("\nValid Parity");
+        validParity = 1;
     }
     else
     {
-        Serial.println("\nInvalid Parity");
+        // Serial.println("\nInvalid Parity");
+        validParity = 0;
     }
 
     // Stop Bits
@@ -144,8 +152,27 @@ void readPacket()
         }
     }
     if (stopBits == 2) {
-        Serial.println("Valid Stop Bits");
+        // Serial.println("Valid Stop Bits");
     }
+
+    int receivedByte = 0, offset = 1;
+    for (int i = 0; i < 8; i++, offset *= 2) {
+        receivedByte += bits[i] * offset;
+    }
+
+    return receivedByte;
+}
+
+/**
+ * Determines if there is an incoming signal in the line
+ * Yes if the line is at low
+ * Args:
+ *     gpioR: the GPIO that servers as the receiver
+ * Returns:
+ *     Whether input is available at the input line
+ * */
+int serialAvailable(int gpioR) {
+    return digitalRead(gpioR) == LOW;
 }
 
 void loop()
@@ -160,8 +187,9 @@ void loop()
             sendPacket(messageByte);
         }
     }
-    if (digitalRead(gpioR) == LOW)
+    if (serialAvailable(gpioR))
     {
-        readPacket();
+        int incomingPacket = readPacket();
+        Serial.println(incomingPacket);
     }
 }
